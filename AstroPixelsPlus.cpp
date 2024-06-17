@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 /**
  *
  * AstroPixelsPlus sketch operates as a I2C master that can optionally be connected to one or more
@@ -31,6 +33,9 @@
 #define USE_WIFI_WEB
 #define USE_WIFI_MARCDUINO
 // #define LIVE_STREAM
+// Forward Declarations
+static void DisconnectRemote();
+void eventLoopTask(void *);
 #endif
 
 ////////////////////////////////
@@ -648,7 +653,7 @@ void setup()
         sMarcSound.setVolume(preferences.getInt(PREFERENCE_MARCSOUND_VOLUME, MARC_SOUND_VOLUME) / 1000.0);
     }
 
-    RLD.selectScrollTextLeft("... AstroPixels ....", LogicEngineRenderer::kBlue, 0, 15);
+    RLD.selectScrollTextLeft("... AstroPixels Custom ....", LogicEngineRenderer::kBlue, 0, 15);
     FLD.selectScrollTextLeft("... R2D2 ...", LogicEngineRenderer::kRed, 0, 15);
 
     // Assign servos to holo projectors
