@@ -291,27 +291,24 @@ HoloLights topHolo(PIN_TOP_HOLO, HoloLights::kRGB, 3);
 const ServoSettings servoSettings[] PROGMEM = {
 #ifndef USE_I2C_ADDRESS
     // First PCA9685 controller
-    {1, 800, 2200, PANEL_GROUP_4 | SMALL_PANEL},  /* 0: door 4 */
-    {2, 800, 2200, PANEL_GROUP_3 | SMALL_PANEL},  /* 1: door 3 */
-    {3, 800, 2200, PANEL_GROUP_2 | SMALL_PANEL},  /* 2: door 2 */
-    {4, 800, 2200, PANEL_GROUP_1 | SMALL_PANEL},  /* 3: door 1 */
-    {5, 800, 2200, PANEL_GROUP_5 | MEDIUM_PANEL}, /* 4: door 5 */
-    {6, 800, 2200, PANEL_GROUP_6 | BIG_PANEL},    /* 5: door 9 */
-    {7, 800, 2200, MINI_PANEL},                   /* 6: mini door 2 */
-    {8, 800, 2200, MINI_PANEL},                   /* 7: mini front psi door */
-    {9, 800, 2200, PANEL_GROUP_10 | PIE_PANEL},   /* 8: pie panel 1 */
-    {10, 800, 2200, PANEL_GROUP_9 | PIE_PANEL},   /* 9: pie panel 2 */
-    {11, 800, 2200, PANEL_GROUP_8 | PIE_PANEL},   /* 10: pie panel 3 */
-    {12, 800, 2200, PANEL_GROUP_7 | PIE_PANEL},   /* 11: pie panel 4 */
-    {13, 800, 2200, TOP_PIE_PANEL},               /* 12: dome top panel */
+    {1, 1700, 800, PANEL_GROUP_4 | SMALL_PANEL},  /* 0: door 4 */
+    {2, 1300, 2200, PANEL_GROUP_3 | SMALL_PANEL},  /* 1: door 3 */
+    {3, 1300, 2200, PANEL_GROUP_2 | SMALL_PANEL},  /* 2: door 2 */
+    {4, 1200, 2200, PANEL_GROUP_1 | SMALL_PANEL},  /* 3: door 1 */
+    {5, 1200, 2200, PANEL_GROUP_5 | MEDIUM_PANEL}, /* 4: door 5 */
+    {6, 1700, 800, PANEL_GROUP_6 | BIG_PANEL},    /* 5: door 9 */
 
-    // Second PCA9685 controller
-    {16, 800, 2200, HOLO_HSERVO}, /* 13: horizontal front holo */
-    {17, 800, 2200, HOLO_VSERVO}, /* 14: vertical front holo */
-    {18, 800, 2200, HOLO_HSERVO}, /* 15: horizontal top holo */
-    {19, 800, 2200, HOLO_VSERVO}, /* 16: vertical top holo */
-    {20, 800, 2200, HOLO_VSERVO}, /* 17: vertical rear holo */
-    {21, 800, 2200, HOLO_HSERVO}, /* 18: horizontal rear holo */
+    {7, 1000, 2400, PANEL_GROUP_10 | PIE_PANEL},   /* 6: pie panel 1 */
+    {8, 1000, 2400, PANEL_GROUP_9 | PIE_PANEL},   /* 7: pie panel 2 */
+    {9, 1000, 2400, PANEL_GROUP_8 | PIE_PANEL},   /* 8: pie panel 3 */
+    {10, 1300, 2400, PANEL_GROUP_7 | PIE_PANEL},   /* 9: pie panel 4 */
+
+    {11, 1200, 1700, HOLO_VSERVO}, /* 10: horizontal front holo */
+    {12, 1200, 1700, HOLO_HSERVO}, /* 11: vertical front holo */
+    {13, 1200, 1700, HOLO_HSERVO}, /* 12: horizontal top holo */
+    {14, 1200, 1700, HOLO_VSERVO}, /* 13: vertical top holo */
+    {15, 1400, 2000, HOLO_HSERVO}, /* 14: vertical rear holo */
+    {16, 1400, 2000, HOLO_VSERVO}, /* 15: horizontal rear holo */
 #endif
 };
 
@@ -657,18 +654,17 @@ void setup()
     FLD.selectScrollTextLeft("... R2D2 ...", LogicEngineRenderer::kRed, 0, 15);
 
     // Assign servos to holo projectors
-    frontHolo.assignServos(&servoDispatch, 13, 14);
-    // Second PCA9685 controller
-    // { 16, 800, 2200, HOLO_HSERVO },                /* 13: horizontal front holo */
-    // { 17, 800, 2200, HOLO_VSERVO },                /* 14: vertical front holo */
+    frontHolo.assignServos(&servoDispatch, 10, 11);
+    // {11, 800, 2200, HOLO_HSERVO}, /* 10: horizontal front holo */
+    // {12, 800, 2200, HOLO_VSERVO}, /* 11: vertical front holo */
 
-    topHolo.assignServos(&servoDispatch, 15, 16);
-    // { 18, 800, 2200, HOLO_HSERVO },                /* 15: horizontal top holo */
-    // { 19, 800, 2200, HOLO_VSERVO },                /* 16: vertical top holo */
+    topHolo.assignServos(&servoDispatch, 14, 15);
+    // {15, 800, 2200, HOLO_VSERVO}, /* 14: vertical rear holo */
+    // {16, 800, 2200, HOLO_HSERVO}, /* 15: horizontal rear holo */
 
-    rearHolo.assignServos(&servoDispatch, 17, 18);
-    // { 20, 800, 2200, HOLO_VSERVO },                /* 17: vertical rear holo */
-    // { 21, 800, 2200, HOLO_HSERVO },                /* 18: horizontal rear holo */
+    rearHolo.assignServos(&servoDispatch, 12, 13);
+    // {13, 800, 2200, HOLO_HSERVO}, /* 12: horizontal top holo */
+    // {14, 800, 2200, HOLO_VSERVO}, /* 13: vertical top holo */
 
 #ifdef USE_WIFI
     if (remoteEnabled)
@@ -1101,6 +1097,7 @@ void mainLoop()
     {
 
         int ch = Serial.read();
+        Serial.print((char) ch);
         // ================================================================
         if (preferences.getBool(PREFERENCE_MARCSERIAL_PASS, MARC_SERIAL_PASS))
         {
